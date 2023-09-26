@@ -26,7 +26,7 @@ const exitWithAnimation = () => {
     router.push(`/comic/${route.params.comicid}`);
   }, 300);
 };
-const commitViewerWheel = () => {
+const cancelExiting = () => {
   viewerFrameMove.value = 0;
   viewerAnimating.value = true;
   viewerAnimatingTimeout = setTimeout(() => {
@@ -48,7 +48,7 @@ const viewerOnWheel = (e: WheelEvent) => {
     }, 300);
     return;
   }
-  viewerWheelTimeout = setTimeout(commitViewerWheel, 300);
+  viewerWheelTimeout = setTimeout(cancelExiting, 300);
 };
 const viewerOnKeydown = (e: KeyboardEvent) => {
   console.log("a");
@@ -57,13 +57,45 @@ const viewerOnKeydown = (e: KeyboardEvent) => {
     exitWithAnimation();
   }
 };
+
+let touchstartY = 0;
+let touching1finger = false;
+const viewerOnTouchChange = (e: TouchEvent) => {
+  if (e.touches.length == 1) {
+    touching1finger = true;
+    touchstartY = e.touches[0].clientY;
+  } else {
+    touching1finger = false;
+    if (!exiting.value) cancelExiting();
+  }
+};
+const viewerOnTouchMove = (e: TouchEvent) => {
+  if (touching1finger)
+    viewerFrameMove.value = Math.max(0, e.touches[0].clientY - touchstartY - 50);
+  if (viewerFrameMove.value > 150) {
+    clearTimeout(viewerAnimatingTimeout);
+    exiting.value = true;
+    viewerAnimating.value = true;
+    viewerAnimatingTimeout = setTimeout(() => {
+      viewerAnimating.value = false;
+      router.push(`/comic/${route.params.comicid}`);
+    }, 300);
+    return;
+  }
+};
 onMounted(() => {
   document.addEventListener("wheel", viewerOnWheel);
   document.addEventListener("keydown", viewerOnKeydown);
+  document.addEventListener("touchstart", viewerOnTouchChange);
+  document.addEventListener("touchmove", viewerOnTouchMove);
+  document.addEventListener("touchend", viewerOnTouchChange);
 });
 onUnmounted(() => {
   document.removeEventListener("wheel", viewerOnWheel);
   document.removeEventListener("keydown", viewerOnKeydown);
+  document.removeEventListener("touchstart", viewerOnTouchChange);
+  document.removeEventListener("touchmove", viewerOnTouchMove);
+  document.removeEventListener("touchend", viewerOnTouchChange);
 });
 </script>
 
