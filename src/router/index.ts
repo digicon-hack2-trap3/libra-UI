@@ -31,11 +31,11 @@ const router = createRouter({
       component: NoteListViewVue,
       children: [
         {
-          path: "/edit/:noteid",
+          path: "edit/:noteid",
           component: NoteEditViewVue,
         },
         {
-          path: "/view/:noteid",
+          path: "view/:noteid",
           component: NoteReadViewVue,
         },
       ],
