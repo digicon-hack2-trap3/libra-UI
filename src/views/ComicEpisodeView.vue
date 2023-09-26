@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const router = useRouter();
@@ -54,29 +54,34 @@ const viewerOnWheel = (e: WheelEvent) => {
   }
   viewerWheelTimeout = setTimeout(commitViewerWheel, 300);
 };
+const viewerOnKeydown = (e: KeyboardEvent) => {
+  console.log("a");
+  if (e.key == "ArrowDown") {
+    console.log("b");
+    exitWithAnimation();
+  }
+};
+onMounted(() => {
+  document.addEventListener("wheel", viewerOnWheel);
+  document.addEventListener("keydown", viewerOnKeydown);
+});
+onUnmounted(() => {
+  document.removeEventListener("wheel", viewerOnWheel);
+  document.removeEventListener("keydown", viewerOnKeydown);
+});
 </script>
 
 <template>
-  <div :class="$style.viewerRegion" :onwheel="viewerOnWheel">
-    <div :class="$style.viewerFrame" :style="viewerFrameStyle"></div>
-  </div>
+  <div :class="$style.viewerFrame" :style="viewerFrameStyle"></div>
 </template>
 
 <style module lang="scss">
 .viewerFrame {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: var(--main-color);
-}
-
-.viewerRegion {
   position: fixed;
   left: 0;
   top: 0;
   width: 100vw;
   height: 100vh;
+  background-color: var(--main-color);
 }
 </style>
