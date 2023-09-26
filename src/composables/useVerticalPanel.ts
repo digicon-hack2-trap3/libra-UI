@@ -4,7 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 export const useVerticalPanel = (prevPath: string) => {
   const router = useRouter();
 
-  const exiting = ref(false);
+  const exiting = ref(true);
   const viewerAnimating = ref(false);
   const viewerFrameMove = ref(0);
   const viewerFrameStyle = computed(() => {
@@ -91,6 +91,13 @@ export const useVerticalPanel = (prevPath: string) => {
     document.addEventListener("touchstart", viewerOnTouchChange);
     document.addEventListener("touchmove", viewerOnTouchMove);
     document.addEventListener("touchend", viewerOnTouchChange);
+    setTimeout(() => {
+      viewerAnimating.value = true;
+      exiting.value = false;
+      viewerAnimatingTimeout = setTimeout(() => {
+        viewerAnimating.value = false;
+      }, 300);
+    }, 0);
   });
   onUnmounted(() => {
     document.removeEventListener("wheel", viewerOnWheel);
