@@ -12,7 +12,7 @@ export const useVerticalPanel = (prevPath: string) => {
       transform: `translateY(${
         exiting.value ? "100%" : `${viewerFrameMove.value}px`
       })`,
-      transition: viewerAnimating.value ? "0.3s transform ease" : "none",
+      transition: viewerAnimating.value ? "0.3s transform ease-out" : "none",
     };
   });
   let viewerWheelTimeout = -1;
@@ -50,9 +50,7 @@ export const useVerticalPanel = (prevPath: string) => {
     viewerWheelTimeout = setTimeout(cancelExiting, 300);
   };
   const viewerOnKeydown = (e: KeyboardEvent) => {
-    console.log("a");
-    if (e.key == "ArrowDown" || e.key == "Escape") {
-      console.log("b");
+    if (e.key == "ArrowDown" || e.key == "ArrowUp" || e.key == "Escape") {
       exitWithAnimation();
     }
   };
