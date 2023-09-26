@@ -27,15 +27,11 @@ const exitWithAnimation = () => {
   }, 300);
 };
 const commitViewerWheel = () => {
-  if (viewerFrameMove.value > 100) {
-    exitWithAnimation();
-  } else {
-    viewerFrameMove.value = 0;
-    viewerAnimating.value = true;
-    viewerAnimatingTimeout = setTimeout(() => {
-      viewerAnimating.value = false;
-    }, 300);
-  }
+  viewerFrameMove.value = 0;
+  viewerAnimating.value = true;
+  viewerAnimatingTimeout = setTimeout(() => {
+    viewerAnimating.value = false;
+  }, 300);
 };
 const viewerOnWheel = (e: WheelEvent) => {
   if (e.ctrlKey) return;
