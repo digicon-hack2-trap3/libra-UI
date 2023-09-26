@@ -52,7 +52,7 @@ const viewerOnWheel = (e: WheelEvent) => {
 };
 const viewerOnKeydown = (e: KeyboardEvent) => {
   console.log("a");
-  if (e.key == "ArrowDown") {
+  if (e.key == "ArrowDown" || e.key == "Escape") {
     console.log("b");
     exitWithAnimation();
   }
