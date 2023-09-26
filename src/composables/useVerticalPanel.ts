@@ -80,7 +80,7 @@ export const useVerticalPanel = (prevPath: string) => {
       viewerAnimating.value = true;
       viewerAnimatingTimeout = setTimeout(() => {
         viewerAnimating.value = false;
-        router.push(`/comic/${route.params.comicid}`);
+        router.push(prevPath);
       }, 300);
       return;
     }
