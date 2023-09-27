@@ -2,13 +2,7 @@
 import { ref } from "vue";
 import rgbHex from "rgb-hex";
 const props = defineProps(["noteColor"]);
-
 const noteColor = ref<String>(props.noteColor);
-if (noteColor == "") noteColor = "5e6a94";
-const lightR = (parseInt("0x" + noteColor.value.slice(0, 2)) * 2 + 255) / 3;
-const lightG = (parseInt("0x" + noteColor.value.slice(2, 4)) * 2 + 255) / 3;
-const lightB = (parseInt("0x" + noteColor.value.slice(4, 6)) * 2 + 255) / 3;
-const noteColorlight = ref<String>(rgbHex(lightR, lightG, lightB));
 </script>
 
 <template>
@@ -19,7 +13,7 @@ const noteColorlight = ref<String>(rgbHex(lightR, lightG, lightB));
       background: #e2ecf5;
       border: 1px #5e6a94 solid;
     "
-    :style="{ borderColor: '#' + noteColor }"
+    :style="{ background: '#' + noteColor }"
   >
     <div style="width: 14px; height: 298px; background: #85a4d1">
       <div style="width: 100%; height: 100%; position: relative">

@@ -22,9 +22,14 @@ noteApi.noteGet().then((res) => {
     </h3>
     <button :class="$style.write_button">感想ノートを書く</button>
     <br />
-    <NoteFrontSmall note-color="5e6a94" />
-    <div v-for="note in notes">
-      <RouterLink :to="'/notes/view/' + note.noteid">{{ note }}</RouterLink>
+
+    <div v-for="(note, idx) in notes" :class="$style.note_container">
+      <RouterLink :to="'/notes/view/' + note.noteid"
+        ><NoteFrontSmall
+          :note-color="note.color"
+          :class="$style.note"
+          :style="{ left: idx * 5 + 'rem' }"
+      /></RouterLink>
     </div>
     <RouterLink to="/notes/view/1">note1</RouterLink>
     <RouterLink to="/notes/view/2">note2</RouterLink>
@@ -36,6 +41,13 @@ noteApi.noteGet().then((res) => {
 <style module lang="scss">
 .container {
   padding: 80px;
+}
+.note_container {
+  position: relative;
+  float: left;
+}
+.note {
+  position: absolute;
 }
 .write_button {
   position: fixed;
