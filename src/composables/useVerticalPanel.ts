@@ -1,9 +1,12 @@
+import { useVerticalPanelStack } from "@/stores/verticalPanelStack";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 export const useVerticalPanel = (prevPath: string) => {
   const router = useRouter();
+  const stack = useVerticalPanelStack();
 
+  const panelId = stack.register();
   const exiting = ref(true);
   const viewerAnimating = ref(false);
   const viewerFrameMove = ref(0);
@@ -18,10 +21,12 @@ export const useVerticalPanel = (prevPath: string) => {
   let viewerWheelTimeout = -1;
   let viewerAnimatingTimeout = -1;
   const exitWithAnimation = () => {
+    clearTimeout(viewerAnimatingTimeout);
     exiting.value = true;
     viewerAnimating.value = true;
     viewerAnimatingTimeout = setTimeout(() => {
       viewerAnimating.value = false;
+      stack.unregister(panelId);
       router.push(prevPath);
     }, 300);
   };
@@ -33,23 +38,20 @@ export const useVerticalPanel = (prevPath: string) => {
     }, 300);
   };
   const viewerOnWheel = (e: WheelEvent) => {
+    if (!stack.isMe(panelId)) return;
     if (e.ctrlKey) return;
     if (exiting.value) return;
     viewerFrameMove.value -= e.deltaY;
     clearTimeout(viewerWheelTimeout);
     clearTimeout(viewerAnimatingTimeout);
     if (viewerFrameMove.value > 300) {
-      exiting.value = true;
-      viewerAnimating.value = true;
-      viewerAnimatingTimeout = setTimeout(() => {
-        viewerAnimating.value = false;
-        router.push(prevPath);
-      }, 300);
+      exitWithAnimation();
       return;
     }
     viewerWheelTimeout = setTimeout(cancelExiting, 300);
   };
   const viewerOnKeydown = (e: KeyboardEvent) => {
+    if (!stack.isMe(panelId)) return;
     if (e.key == "ArrowDown" || e.key == "ArrowUp" || e.key == "Escape") {
       exitWithAnimation();
     }
@@ -58,6 +60,7 @@ export const useVerticalPanel = (prevPath: string) => {
   let touchstartY = 0;
   let touching1finger = false;
   const viewerOnTouchChange = (e: TouchEvent) => {
+    if (!stack.isMe(panelId)) return;
     if (e.touches.length == 1) {
       touching1finger = true;
       touchstartY = e.touches[0].clientY;
@@ -67,24 +70,19 @@ export const useVerticalPanel = (prevPath: string) => {
     }
   };
   const viewerOnTouchMove = (e: TouchEvent) => {
+    if (!stack.isMe(panelId)) return;
     if (touching1finger)
       viewerFrameMove.value = Math.max(
         0,
         e.touches[0].clientY - touchstartY - 50
       );
     if (viewerFrameMove.value > 150) {
-      clearTimeout(viewerAnimatingTimeout);
-      exiting.value = true;
-      viewerAnimating.value = true;
-      viewerAnimatingTimeout = setTimeout(() => {
-        viewerAnimating.value = false;
-        router.push(prevPath);
-      }, 300);
+      exitWithAnimation();
       return;
     }
   };
   onMounted(() => {
-    document.addEventListener("wheel", viewerOnWheel);
+    document.addEventListener("wheel", viewerOnWheel, {});
     document.addEventListener("keydown", viewerOnKeydown);
     document.addEventListener("touchstart", viewerOnTouchChange);
     document.addEventListener("touchmove", viewerOnTouchMove);
