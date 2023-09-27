@@ -28,6 +28,7 @@ import { RouterLink, RouterView } from "vue-router";
   display: flex;
   justify-content: center;
   background-color: var(--sub-color);
+  z-index: 1;
 }
 .navbar {
   font-size: 1rem;

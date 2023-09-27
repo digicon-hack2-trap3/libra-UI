@@ -1,23 +1,27 @@
 <script setup lang="ts">
 import { useVerticalPanel } from "@/composables/useVerticalPanel";
+import { useComics } from "@/stores/comicList";
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
 const verticalPanel = useVerticalPanel("/");
+
+const comics = useComics();
+const comic = computed(() => {
+  return comics.store.get(route.params.comicid as string);
+});
 </script>
 
 <template>
   <div :style="verticalPanel.style.value" :class="$style.comicDetailsFrame">
     comicdetails
-    <div>
-      <RouterLink :to="`/comic/${$route.params.comicid}/1`"
-        >episode1</RouterLink
-      >
-      <RouterLink :to="`/comic/${$route.params.comicid}/2`"
-        >episode2</RouterLink
-      >
-      <RouterLink :to="`/comic/${$route.params.comicid}/3`"
-        >episode3</RouterLink
+    <div v-if="comic">
+      <RouterLink
+        v-for="episode in comic.episodes"
+        :key="episode.id"
+        :to="`/comic/${$route.params.comicid}/${episode.id}`"
+        >{{ episode.title }}</RouterLink
       >
     </div>
     <RouterView />
