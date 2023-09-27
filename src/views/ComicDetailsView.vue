@@ -15,8 +15,8 @@ const comic = computed(() => {
 
 <template>
   <div :style="verticalPanel.style.value" :class="$style.comicDetailsFrame">
-    comicdetails
-    <div v-if="comic">
+    <div v-if="comic" :class="$style.comicContainer">
+      <img :src="comic.thumbnail" :class="$style.comicThumbnail" />
       <div :class="$style.episodesContainer">
         <RouterLink
           v-for="episode in comic.episodes"
@@ -38,12 +38,31 @@ const comic = computed(() => {
   background-color: var(--main-color);
   height: 100vh;
   width: 100vw;
+  padding: 3rem 0;
+  box-shadow: 0 0 2rem #000;
+}
+
+.comicContainer {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 80rem;
+}
+
+.comicThumbnail {
+  background-repeat: no-repeat;
+  background-size: cover;
+  max-width: 30rem;
+  max-height: 30rem;
 }
 
 .episodesContainer {
+  position: absolute;
+  right: 0;
   display: flex;
   overflow: scroll;
-  width: 60rem;
+  width: 100%;
+  max-width: 50rem;
 }
 
 .episode {
