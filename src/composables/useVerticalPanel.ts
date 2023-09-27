@@ -41,6 +41,7 @@ export const useVerticalPanel = (prevPath: string) => {
     if (!stack.isMe(panelId)) return;
     if (e.ctrlKey) return;
     viewerFrameMove.value = Math.max(0, viewerFrameMove.value - e.deltaY);
+    e.preventDefault();
     clearTimeout(viewerWheelTimeout);
     clearTimeout(viewerAnimatingTimeout);
     if (viewerFrameMove.value > 300) {
@@ -48,7 +49,6 @@ export const useVerticalPanel = (prevPath: string) => {
       return;
     }
     viewerWheelTimeout = setTimeout(cancelExiting, 300);
-    e.preventDefault();
   };
   const viewerOnKeydown = (e: KeyboardEvent) => {
     if (!stack.isMe(panelId)) return;
