@@ -6,6 +6,7 @@ import ComicDetailsViewVue from "@/views/ComicDetailsView.vue";
 import ComicEpisodeViewVue from "@/views/ComicEpisodeView.vue";
 import NoteEditViewVue from "@/views/NoteEditView.vue";
 import NoteReadViewVue from "@/views/NoteReadView.vue";
+import LoginRegisterViewVue from "@/views/LoginRegisterView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,6 +40,10 @@ const router = createRouter({
           component: NoteReadViewVue,
         },
       ],
+    },
+    {
+      path: "/login",
+      component: LoginRegisterViewVue,
     },
   ],
 });
