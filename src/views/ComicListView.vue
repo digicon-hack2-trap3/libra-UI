@@ -6,6 +6,10 @@ comicList.load();
 </script>
 
 <template>
+  <div :class="$style.logo">図書室ガドク</div>
+  <div :class="$style.headerContainer">
+    <h1>漫画</h1>
+  </div>
   <div :class="$style.comicContainer">
     <RouterLink
       v-for="comic in comicList.list"
@@ -30,14 +34,33 @@ comicList.load();
 </template>
 
 <style module lang="scss">
+@mixin contentWrapper {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.logo {
+  padding: 0.5rem 1.9rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.headerContainer {
+  @include contentWrapper;
+  padding: 0 2rem;
+  h1 {
+    font-size: 3rem;
+    margin-top: 2.5rem;
+  }
+}
+
 .comicContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 100%;
-  max-width: 80rem;
   margin: 2rem auto;
   z-index: -1;
+  @include contentWrapper;
 }
 
 .comic {

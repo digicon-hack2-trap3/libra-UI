@@ -3,24 +3,26 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-  <header :class="$style.header">
-    <div :class="$style.contentWrapper">
-      <nav :class="$style.navbar">
-        <RouterLink to="/">漫画</RouterLink> |
-        <RouterLink to="/notes">書庫</RouterLink>
-      </nav>
-      <div :class="$style.login">
-        <RouterLink to="/login">ログイン / ユーザ登録</RouterLink>
+  <div style="padding-top: 3.5rem;">
+    <header :class="$style.header">
+      <div :class="$style.contentWrapper">
+        <nav :class="$style.navbar">
+          <RouterLink to="/">漫画</RouterLink> |
+          <RouterLink to="/notes">書庫</RouterLink>
+        </nav>
+        <div :class="$style.login">
+          <RouterLink to="/login">ログイン / ユーザ登録</RouterLink>
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <RouterView />
+    <RouterView />
+  </div>
 </template>
 
 <style module lang="scss">
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;

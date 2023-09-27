@@ -54,6 +54,7 @@ export const useVerticalPanel = (prevPath: string) => {
     if (!stack.isMe(panelId)) return;
     if (e.key == "ArrowDown" || e.key == "ArrowUp" || e.key == "Escape") {
       exitWithAnimation();
+      e.stopPropagation();
     }
   };
 
