@@ -16,6 +16,10 @@ const comics = useComics();
 const comic = computed(() => {
   return comics.store.get(route.params.comicid as string);
 });
+
+const episodeOnWheel = (e: WheelEvent) => {
+  if (e.deltaY == 0) e.stopPropagation();
+};
 </script>
 
 <template>
@@ -29,7 +33,7 @@ const comic = computed(() => {
             <div :class="$style.comicAuthor">{{ comic.author }}</div>
             <div :class="$style.comicIntro">{{ comic.intro }}</div>
           </div>
-          <div :class="$style.episodesContainer">
+          <div :class="$style.episodesContainer" :onwheel="episodeOnWheel">
             <RouterLink
               v-for="episode in comic.episodes"
               :key="episode.id"
