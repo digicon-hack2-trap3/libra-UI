@@ -40,7 +40,6 @@ export const useVerticalPanel = (prevPath: string) => {
   const viewerOnWheel = (e: WheelEvent) => {
     if (!stack.isMe(panelId)) return;
     if (e.ctrlKey) return;
-    if (exiting.value) return;
     viewerFrameMove.value = Math.max(0, viewerFrameMove.value - e.deltaY);
     clearTimeout(viewerWheelTimeout);
     clearTimeout(viewerAnimatingTimeout);
@@ -49,13 +48,13 @@ export const useVerticalPanel = (prevPath: string) => {
       return;
     }
     viewerWheelTimeout = setTimeout(cancelExiting, 300);
-    e.stopImmediatePropagation();
+    e.preventDefault();
   };
   const viewerOnKeydown = (e: KeyboardEvent) => {
     if (!stack.isMe(panelId)) return;
     if (e.key == "ArrowDown" || e.key == "ArrowUp" || e.key == "Escape") {
       exitWithAnimation();
-      e.stopPropagation();
+      e.preventDefault();
     }
   };
 
@@ -70,6 +69,7 @@ export const useVerticalPanel = (prevPath: string) => {
       touching1finger = false;
       if (!exiting.value) cancelExiting();
     }
+    e.preventDefault();
   };
   const viewerOnTouchMove = (e: TouchEvent) => {
     if (!stack.isMe(panelId)) return;
@@ -82,13 +82,17 @@ export const useVerticalPanel = (prevPath: string) => {
       exitWithAnimation();
       return;
     }
+    e.preventDefault();
   };
-  onMounted(() => {
-    document.addEventListener("wheel", viewerOnWheel, {});
+  let surfaceElem: HTMLElement | null = null;
+
+  const setSurface = (elem: HTMLElement) => {
+    surfaceElem = elem;
+    surfaceElem.addEventListener("wheel", viewerOnWheel);
     document.addEventListener("keydown", viewerOnKeydown);
-    document.addEventListener("touchstart", viewerOnTouchChange);
-    document.addEventListener("touchmove", viewerOnTouchMove);
-    document.addEventListener("touchend", viewerOnTouchChange);
+    surfaceElem.addEventListener("touchstart", viewerOnTouchChange);
+    surfaceElem.addEventListener("touchmove", viewerOnTouchMove);
+    surfaceElem.addEventListener("touchend", viewerOnTouchChange);
     setTimeout(() => {
       viewerAnimating.value = true;
       exiting.value = false;
@@ -96,14 +100,16 @@ export const useVerticalPanel = (prevPath: string) => {
         viewerAnimating.value = false;
       }, 300);
     }, 0);
-  });
+  };
   onUnmounted(() => {
-    document.removeEventListener("wheel", viewerOnWheel);
-    document.removeEventListener("keydown", viewerOnKeydown);
-    document.removeEventListener("touchstart", viewerOnTouchChange);
-    document.removeEventListener("touchmove", viewerOnTouchMove);
-    document.removeEventListener("touchend", viewerOnTouchChange);
+    if (surfaceElem) {
+      surfaceElem.removeEventListener("wheel", viewerOnWheel);
+      document.removeEventListener("keydown", viewerOnKeydown);
+      surfaceElem.removeEventListener("touchstart", viewerOnTouchChange);
+      surfaceElem.removeEventListener("touchmove", viewerOnTouchMove);
+      surfaceElem.removeEventListener("touchend", viewerOnTouchChange);
+    }
   });
 
-  return { style: viewerFrameStyle };
+  return { style: viewerFrameStyle, setSurface };
 };

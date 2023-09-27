@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { useVerticalPanel } from "@/composables/useVerticalPanel";
 import { useComics } from "@/stores/comicList";
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
 const verticalPanel = useVerticalPanel("/");
+const frame = ref<HTMLElement>();
+
+onMounted(() => {
+  if (frame.value) verticalPanel.setSurface(frame.value);
+});
 
 const comics = useComics();
 const comic = computed(() => {
@@ -14,35 +19,44 @@ const comic = computed(() => {
 </script>
 
 <template>
-  <div :style="verticalPanel.style.value" :class="$style.comicDetailsFrame">
-    <div v-if="comic" :class="$style.comicContainer">
-      <img :src="comic.thumbnail" :class="$style.comicThumbnail" />
-      <div :class="$style.comicInfoContainer">
-        <div :class="$style.comicInfo">
-          <h1 :class="$style.comicTitle">{{ comic.title }}</h1>
-          <div :class="$style.comicAuthor">{{ comic.author }}</div>
-          <div :class="$style.comicIntro">{{ comic.intro }}</div>
-        </div>
-        <div :class="$style.episodesContainer">
-          <RouterLink
-            v-for="episode in comic.episodes"
-            :key="episode.id"
-            :to="`/comic/${$route.params.comicid}/${episode.id}`"
-            :class="$style.episode"
-            ><div :class="$style.episodeNumber">{{ episode.id }}</div>
-            <div :class="$style.episodeTitle">
-              {{ episode.title }}
-            </div></RouterLink
-          >
+  <div :class="$style.frame" ref="frame">
+    <div :style="verticalPanel.style.value" :class="$style.comicDetails">
+      <div v-if="comic" :class="$style.comicContainer">
+        <img :src="comic.thumbnail" :class="$style.comicThumbnail" />
+        <div :class="$style.comicInfoContainer">
+          <div :class="$style.comicInfo">
+            <h1 :class="$style.comicTitle">{{ comic.title }}</h1>
+            <div :class="$style.comicAuthor">{{ comic.author }}</div>
+            <div :class="$style.comicIntro">{{ comic.intro }}</div>
+          </div>
+          <div :class="$style.episodesContainer">
+            <RouterLink
+              v-for="episode in comic.episodes"
+              :key="episode.id"
+              :to="`/comic/${$route.params.comicid}/${episode.id}`"
+              :class="$style.episode"
+              ><div :class="$style.episodeNumber">{{ episode.id }}</div>
+              <div :class="$style.episodeTitle">
+                {{ episode.title }}
+              </div></RouterLink
+            >
+          </div>
         </div>
       </div>
+      <RouterView />
     </div>
-    <RouterView />
   </div>
 </template>
 
 <style module lang="scss">
-.comicDetailsFrame {
+.frame {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+}
+
+.comicDetails {
   position: fixed;
   top: 3.5rem;
   background-color: var(--main-color);
@@ -116,5 +130,4 @@ const comic = computed(() => {
 .episodeTitle {
   writing-mode: vertical-rl;
 }
-
 </style>
