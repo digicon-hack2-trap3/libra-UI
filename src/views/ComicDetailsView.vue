@@ -17,12 +17,15 @@ const comic = computed(() => {
   <div :style="verticalPanel.style.value" :class="$style.comicDetailsFrame">
     comicdetails
     <div v-if="comic">
-      <RouterLink
-        v-for="episode in comic.episodes"
-        :key="episode.id"
-        :to="`/comic/${$route.params.comicid}/${episode.id}`"
-        >{{ episode.title }}</RouterLink
-      >
+      <div :class="$style.episodesContainer">
+        <RouterLink
+          v-for="episode in comic.episodes"
+          :key="episode.id"
+          :to="`/comic/${$route.params.comicid}/${episode.id}`"
+          :class="$style.episode"
+          >{{ episode.title }}</RouterLink
+        >
+      </div>
     </div>
     <RouterView />
   </div>
@@ -35,5 +38,22 @@ const comic = computed(() => {
   background-color: var(--main-color);
   height: 100vh;
   width: 100vw;
+}
+
+.episodesContainer {
+  display: flex;
+  overflow: scroll;
+  width: 60rem;
+}
+
+.episode {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  margin: 1.25rem;
+  width: 5.625rem;
+  height: 22.5rem;
+  background-color: #fff;
+  writing-mode: vertical-rl;
 }
 </style>

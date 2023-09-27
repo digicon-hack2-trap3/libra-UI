@@ -3,6 +3,10 @@ import { useComics } from "@/stores/comicList";
 
 const comicList = useComics();
 comicList.load();
+document.addEventListener('wheel', (e) => {
+  console.log(e)
+})
+
 </script>
 
 <template>
