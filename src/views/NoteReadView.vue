@@ -33,10 +33,12 @@ noteApi
   <div :class="$style.container">
     <div :class="$style.titlecontainer">
       <div
-        :class="$style.title"
+        :class="$style.titleContainer"
         :style="{ backgroundColor: '#' + note?.color }"
       >
-        {{ note?.title }}
+        <div :class="$style.title">
+          {{ note?.title }}
+        </div>
       </div>
     </div>
     <div :class="$style.textcontainer">
@@ -72,12 +74,18 @@ noteApi
   margin: 2px;
   height: 40px;
 }
-.title {
+.titleContainer {
   min-width: 30rem;
   height: calc(100vh - 3.5rem);
-  text-align: center;
-  display: table-cell;
-  vertical-align: middle;
+  text-align: right;
+  display: block;
+  padding: 1rem;
+}
+
+.title {
+  position: relative;
+  top: 20rem;
+  font-size: 3rem;
 }
 .textcontainer {
   width: 5000px;
@@ -100,4 +108,3 @@ noteApi
   line-height: 2.5em;
 }
 </style>
-

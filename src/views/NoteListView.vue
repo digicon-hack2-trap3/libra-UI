@@ -31,9 +31,6 @@ noteApi.noteGet().then((res) => {
           ><NoteFrontSmall :note-color="note.color" :class="$style.note"
         /></RouterLink>
       </div>
-      <RouterLink to="/notes/view/1">note1</RouterLink>
-      <RouterLink to="/notes/view/2">note2</RouterLink>
-      <RouterLink to="/notes/view/3">note3</RouterLink>
     </div>
   </div>
   <RouterView />
@@ -45,13 +42,26 @@ noteApi.noteGet().then((res) => {
 }
 .note_container {
   display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  left: 3rem;
 }
 .note {
   margin-left: -3rem;
+  margin-bottom: 1rem;
 }
 .write_button {
   position: fixed;
-  right: 80px;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 9999;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  color: #FFF;
+  background: #888;
+  outline: none;
+  border: 0.2rem solid #555;
+  box-shadow: 0 0 1rem #0008;
 }
 h2 {
   text-align: center;

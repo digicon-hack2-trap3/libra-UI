@@ -3,8 +3,8 @@ import { ref } from "vue";
 import { NoteApi } from "../lib/apis/generated/apis/NoteApi";
 import router from "@/router";
 
-const text = ref<string>("abc");
-const title = ref<string>("def");
+const text = ref<string>("");
+const title = ref<string>("");
 const colorPos = ref<number>(0);
 const color = ref<string>("aaaaaa");
 
@@ -39,7 +39,7 @@ const colorChange = (color1: string) => {
     <div :class="$style.middle">
       <textarea
         v-model="text"
-        placeholder="add multiple lines"
+        placeholder=""
         :class="$style.dashed_note"
       />
     </div>
@@ -56,7 +56,7 @@ const colorChange = (color1: string) => {
       </div>
       <br />
       <br />
-      <button @click="postNote()" :class="$style.button">書き納め</button>
+      <button @click="postNote()" :class="$style.button">書き終える</button>
     </div>
   </div>
   <RouterView />
@@ -80,6 +80,7 @@ const colorChange = (color1: string) => {
 .middle {
   width: 800px;
   height: calc(100vh - 3.5rem);
+  margin-top: 1rem;
 }
 .right {
   width: 33.3%;

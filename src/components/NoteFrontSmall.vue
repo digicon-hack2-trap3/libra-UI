@@ -6,16 +6,16 @@ const noteColor = ref<String>(props.noteColor);
 </script>
 
 <template>
-  <div
+  <div :class="$style.bbb"
     style="
       width: 192px;
       height: 300px;
       background: #e2ecf5;
-      border: 1px #5e6a94 solid;
+      border: 0.1rem #5e6a94 solid;
     "
     :style="{ background: '#' + noteColor }"
   >
-    <div style="width: 14px; height: 298px; background: #85a4d1">
+    <div style="width: 14px; height: 297px; background: #85a4d1">
       <div style="width: 100%; height: 100%; position: relative">
         <div
           style="
@@ -166,5 +166,10 @@ const noteColor = ref<String>(props.noteColor);
 .aaa {
   color: colorVal;
 }
+
+.bbb:hover {
+  border-color: #fff;
+}
+
 </style>
 
