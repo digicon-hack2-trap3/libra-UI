@@ -17,11 +17,25 @@ const postNote = () => {
     })
     .then(() => router.push("/notes"));
 };
+
+const colors = ref<string[]>([
+  "000000",
+  "22ff22",
+  "ffffff",
+  "ff44ff",
+  "ffe4d6",
+  "419197",
+  "befff7",
+]);
+const colorChange = (color1: string) => {
+  color.value = color1;
+  console.log(color1);
+};
 </script>
 
 <template>
   <div :class="$style.container">
-    <div :class="$style.left">a</div>
+    <div :class="$style.left"></div>
     <div :class="$style.middle">
       <textarea
         v-model="text"
@@ -31,10 +45,18 @@ const postNote = () => {
     </div>
     <div :class="$style.right">
       <h3>タイトル</h3>
-      <input v-model="title" />
+      <input v-model="title" :class="$style.title" />
       <h3>表紙の色</h3>
-      <div :class="$style.gradient" @click=""></div>
-      <button @click="postNote()">書き納め</button>
+      <div v-for="color1 in colors">
+        <div
+          @click="colorChange(color1)"
+          :class="$style.colors"
+          :style="{ backgroundColor: '#' + color1 }"
+        ></div>
+      </div>
+      <br />
+      <br />
+      <button @click="postNote()" :class="$style.button">書き納め</button>
     </div>
   </div>
   <RouterView />
@@ -44,6 +66,12 @@ const postNote = () => {
 .container {
   display: flex;
   height: calc(100vh - 3.5rem);
+}
+.colors {
+  width: 30px;
+  height: 30px;
+  margin: 2px;
+  float: left;
 }
 .left {
   width: 33.3%;
@@ -68,11 +96,18 @@ const postNote = () => {
   background-size: 100% 2.5em;
   background-image: linear-gradient(180deg, #e2ecf5 2px, transparent 2px);
   line-height: 2.5em;
+  font-family: Klee One;
 }
 .gradient {
   width: 100%;
   height: 1rem;
   background: linear-gradient(to right, blue, pink);
+}
+.title {
+  font-family: Klee One;
+}
+.button {
+  font-family: Klee One;
 }
 </style>
 
