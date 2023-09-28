@@ -27,7 +27,7 @@ const pageLeft = computed(() => {
 
 const viewerOnKeydown = (e: KeyboardEvent) => {
   if (e.key == "ArrowLeft") {
-    if (episode.value && episode.value.pages.length > pageCurrent.value)
+    if (episode.value && episode.value.pages.length > pageCurrent.value + 2)
       pageCurrent.value += 2;
   }
   if (e.key == "ArrowRight") {
