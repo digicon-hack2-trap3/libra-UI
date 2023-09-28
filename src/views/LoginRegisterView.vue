@@ -15,7 +15,10 @@ const login = () => {
   };
   userApi
     .loginPost(accountdata)
-    .then(() => (loginresult.value = "ログインに成功しました"));
+    .then(() => (loginresult.value = "ログインに成功しました"))
+    .catch(
+      (reason) => (loginresult.value = "ログインに失敗しました: " + reason)
+    );
 };
 </script>
 
