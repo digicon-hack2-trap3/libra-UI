@@ -47,9 +47,9 @@ const episodeOnWheel = (e: WheelEvent) => {
           </div>
         </div>
       </div>
-      <RouterView />
     </div>
   </div>
+  <RouterView />
 </template>
 
 <style module lang="scss">
