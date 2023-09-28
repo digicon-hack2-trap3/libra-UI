@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import rgbHex from "rgb-hex";
-const props = defineProps(["noteColor", ""]);
+const props = defineProps(["noteColor"]);
 const noteColor = ref<String>(props.noteColor);
 </script>
 

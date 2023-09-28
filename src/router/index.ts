@@ -38,6 +38,7 @@ const router = createRouter({
     {
       path: "/notes/view/:noteid",
       component: NoteReadViewVue,
+      props: true,
     },
     {
       path: "/login",

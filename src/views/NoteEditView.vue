@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { NoteApi } from "../lib/apis/generated/apis/NoteApi";
-import type { PostNote } from "@/lib/apis/generated/models/PostNote";
 import router from "@/router";
 
 const text = ref<string>("abc");
@@ -61,18 +60,14 @@ const postNote = () => {
 }
 .dashed_note {
   resize: none;
+  padding-bottom: 1px;
   margin: auto;
   width: 100%;
   height: calc(100vh - 3.5rem);
   background-color: #ffffff;
-  background-image: linear-gradient(
-    180deg,
-    #e2ecf5 2px,
-    transparent 2px
-  ); /* 罫線の色と太さ  */
-  background-size: 100% 2.5em; /* 行の高さ */
-  line-height: 2.5em; /* 文字の高さ */
-  padding-bottom: 1px; /* 最終行の下にも罫線を引く */
+  background-size: 100% 2.5em;
+  background-image: linear-gradient(180deg, #e2ecf5 2px, transparent 2px);
+  line-height: 2.5em;
 }
 .gradient {
   width: 100%;
