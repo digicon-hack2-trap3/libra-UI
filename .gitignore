@@ -1,3 +1,4 @@
 node_modules/
 public/manga/*
 src/lib/apis/generated/*
+dist

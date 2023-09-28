@@ -17,10 +17,7 @@ noteApi.noteGet().then((res) => {
     <h3>
       ここでは全国のユーザーが書いた感想を読んだり、<br />自分で感想を書いたりできます。
     </h3>
-    <button
-      :class="$style.write_button"
-      @click="this.$router.push('/notes/edit')"
-    >
+    <button :class="$style.write_button" @click="$router.push('/notes/edit')">
       感想ノートを書く
     </button>
     <br />
