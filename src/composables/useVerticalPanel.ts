@@ -21,6 +21,7 @@ export const useVerticalPanel = (prevPath: string) => {
   let viewerWheelTimeout = -1;
   let viewerAnimatingTimeout = -1;
   const exitWithAnimation = () => {
+    clearTimeout(viewerWheelTimeout);
     clearTimeout(viewerAnimatingTimeout);
     exiting.value = true;
     viewerAnimating.value = true;
