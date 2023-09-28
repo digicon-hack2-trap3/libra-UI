@@ -4,28 +4,59 @@ import {
   NoteApi,
   type NoteIdGetRequest,
 } from "../lib/apis/generated/apis/NoteApi";
+import type { Note } from "@/lib/apis/generated/models/Note";
 import router from "@/router";
-import type { NoteDetail } from "@/lib/apis/generated";
+import type { NoteAuthorIdGetRequest, NoteDetail } from "@/lib/apis/generated";
 
 const props = defineProps(["noteid"]);
 const noteApi = new NoteApi();
 const note = ref<NoteDetail>();
-console.log(props.noteid);
-const requestParameters: NoteIdGetRequest = { id: props.noteid as number };
-noteApi.noteIdGet(requestParameters).then((res) => {
-  note.value = res;
-});
+const othernotes = ref<Note[]>();
+
+const noteIdGetParameters: NoteIdGetRequest = { id: props.noteid as number };
+noteApi
+  .noteIdGet(noteIdGetParameters)
+  .then((res) => {
+    note.value = res;
+  })
+  .then(() => {
+    const noteAuthorIdGetParameters: NoteAuthorIdGetRequest = {
+      id: note.value?.userId as number,
+    };
+    noteApi.noteAuthorIdGet(noteAuthorIdGetParameters).then((res) => {
+      othernotes.value = res;
+    });
+  });
 </script>
 
 <template>
   <div :class="$style.container">
-    <div :class="$style.title" :style="{ backgroundColor: '#' + note?.color }">
-      {{ note?.title }}
+    <div :class="$style.titlecontainer">
+      <div
+        :class="$style.title"
+        :style="{ backgroundColor: '#' + note?.color }"
+      >
+        {{ note?.title }}
+      </div>
     </div>
     <div :class="$style.textcontainer">
-      <div :class="$style.text">
+      <div :class="[$style.text, $style.dashed_note]">
         {{ note?.text }}
       </div>
+    </div>
+    <div :class="$style.othernotes_container">
+      <div
+        v-for="othernote in othernotes"
+        :style="{ background: '#' + othernote.color }"
+        :class="$style.othernotes"
+      >
+        <RouterLink
+          :to="'/notes/view/' + othernote.noteId"
+          :key="$route.fullPath"
+          >　　　　　　　　　　　</RouterLink
+        >
+      </div>
+      この人の他の感想ノートを見る
     </div>
   </div>
 </template>
@@ -34,23 +65,35 @@ noteApi.noteIdGet(requestParameters).then((res) => {
 .container {
   display: flex;
 }
+.othernotes_container {
+  min-width: 500px;
+}
+.othernotes {
+  margin: 2px;
+  height: 40px;
+}
 .title {
-  width: 800px;
+  min-width: 30rem;
   height: calc(100vh - 3.5rem);
-  background-color: aqua;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
 }
 .textcontainer {
   width: 5000px;
 }
 .text {
   white-space: pre-wrap;
-  columns: 24rem;
+  column-width: 32rem;
+  width: 1000rem;
+  column-fill: auto;
+  height: calc(100vh - 3.5rem);
+  padding-left: 1rem;
 }
 .dashed_note {
   resize: none;
   overflow: scroll;
   padding-bottom: 1px;
-  height: calc(100vh - 3.5rem);
   background-color: #ffffff;
   background-size: 100% 2.5em;
   background-image: linear-gradient(180deg, #e2ecf5 2px, transparent 2px);
