@@ -30,16 +30,14 @@ const router = createRouter({
     {
       path: "/notes",
       component: NoteListViewVue,
-      children: [
-        {
-          path: "edit/:noteid",
-          component: NoteEditViewVue,
-        },
-        {
-          path: "view/:noteid",
-          component: NoteReadViewVue,
-        },
-      ],
+    },
+    {
+      path: "/notes/edit",
+      component: NoteEditViewVue,
+    },
+    {
+      path: "/notes/view/:noteid",
+      component: NoteReadViewVue,
     },
     {
       path: "/login",
@@ -49,3 +47,4 @@ const router = createRouter({
 });
 
 export default router;
+

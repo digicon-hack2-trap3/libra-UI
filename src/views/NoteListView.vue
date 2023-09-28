@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { NoteApi } from "../lib/apis/generated/api";
-import { Configuration } from "../lib/apis/generated/configuration";
-import type { Note } from "@/lib/apis/generated/api";
+import { NoteApi } from "../lib/apis/generated/apis/NoteApi";
+import type { Note } from "@/lib/apis/generated/models/Note";
 import NoteFrontSmall from "@/components/NoteFrontSmall.vue";
 
-const noteApi = new NoteApi(
-  new Configuration({ basePath: "http://localhost:3000" })
-);
+const noteApi = new NoteApi();
 const notes = ref<Note[]>();
 noteApi.noteGet().then((res) => {
-  notes.value = res.data;
+  notes.value = res;
 });
 </script>
 
@@ -20,12 +17,17 @@ noteApi.noteGet().then((res) => {
     <h3>
       ここでは全国のユーザーが書いた感想を読んだり、<br />自分で感想を書いたりできます。
     </h3>
-    <button :class="$style.write_button">感想ノートを書く</button>
+    <button
+      :class="$style.write_button"
+      @click="this.$router.push('/notes/edit')"
+    >
+      感想ノートを書く
+    </button>
     <br />
 
     <div :class="$style.note_container">
       <div v-for="(note, idx) in notes" :style="{ zIndex: idx }">
-        <RouterLink :to="'/notes/view/' + note.noteid"
+        <RouterLink :to="'/notes/view/' + note.noteId"
           ><NoteFrontSmall :note-color="note.color" :class="$style.note"
         /></RouterLink>
       </div>
